@@ -191,6 +191,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DataBase.cs" />
+    <Compile Include="Plaza\Schemes\FutCommon.cs" />
+    <Compile Include="Plaza\Schemes\FutTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -249,7 +251,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Plaza\Lib\" />
-    <Folder Include="Plaza\Schemes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
