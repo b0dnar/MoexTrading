@@ -4,12 +4,19 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+
+using Mercatum.CGate;
+
+using ru.micexrts.cgate;
+
 namespace MoexTrading.Controllers
 {
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
+
+
             ViewBag.Title = "Home Page";
 
             return View();
