@@ -6,7 +6,8 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using MoexTrading.Plaza.Job;
+using MoexTrading.Schedule;
+using FluentScheduler;
 
 namespace MoexTrading
 {
@@ -20,7 +21,8 @@ namespace MoexTrading
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            TotalInfo.Run();
+            JobManager.Initialize(new MyRegistry());
+            //TotalInfo.Run();
         }
     }
 }

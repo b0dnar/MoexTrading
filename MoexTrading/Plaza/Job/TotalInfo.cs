@@ -8,11 +8,14 @@ using MoexTrading.Models;
 
 namespace MoexTrading.Plaza.Job
 {
-    public static class TotalInfo
+
+
+
+    public static class TotalInfo 
     {
         private static bool bExit = false;
 
-        public static async void Run()
+        public static void Run()
         {
             
             string streamName = "FORTS_FUTINFO_REPL";
@@ -25,8 +28,7 @@ namespace MoexTrading.Plaza.Job
             listener.Handler += new Listener.MessageHandler(MessageHandlerClient);
             // RunRead();
 
-            await Task.Run(() =>
-            {
+           
                 while (!bExit)
                 {
                     try
@@ -63,7 +65,7 @@ namespace MoexTrading.Plaza.Job
                         Console.WriteLine(e.Message);
                     }
                 }
-            });
+            
 
 
             
@@ -85,6 +87,11 @@ namespace MoexTrading.Plaza.Job
                     StreamDataMessage replmsg = (StreamDataMessage)msg;
                     fut_sess_contents tool = new fut_sess_contents(replmsg.Data);
                     int id = tool.isin_id;
+
+                    if(id/1000000 > 10)
+                    {
+                        return 0;
+                    }
 
                     //if (tool.short_isin.Equals(""))
                     //    return 0;
