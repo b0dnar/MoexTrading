@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using MoexTrading.Plaza.Job;
 
 namespace MoexTrading
 {
@@ -18,6 +19,8 @@ namespace MoexTrading
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            TotalInfo.Run();
         }
     }
 }

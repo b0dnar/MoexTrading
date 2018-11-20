@@ -203,6 +203,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DataBase.cs" />
+    <Compile Include="Plaza\Job\TotalInfo.cs" />
     <Compile Include="Plaza\Schemes\FutCommon.cs" />
     <Compile Include="Plaza\Schemes\FutTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -245,6 +246,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Plaza\ini\cgate.ini" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
