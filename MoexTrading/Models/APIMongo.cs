@@ -30,6 +30,14 @@ namespace MoexTrading.Models
             await collection.InsertOneAsync(doc);
         }
 
+        public static List<DataTools> GetTools()
+        {
+            string nameCollection = InfoMongo.GetElementMongo(ElementMongo.NameTableTools);
+            var collection = database.GetCollection<DataTools>(nameCollection).AsQueryable<DataTools>();
+
+            return collection.ToList();
+        }
+
         public static async Task<DataTools> GetToolsById(int id)
         {
             string nameCollection = InfoMongo.GetElementMongo(ElementMongo.NameTableTools);
@@ -46,15 +54,15 @@ namespace MoexTrading.Models
                         if (list.Count == 0)
                             return null;
 
-                        return (DataTools)list.Where(x => BsonSerializer.Deserialize<DataTools>(x).Id == id);//First(x => BsonSerializer.Deserialize<DataTools>(x).Id == id);//    Where(x => BsonSerializer.Deserialize<DataTools>(x).Id == id).Select();
+                        //  return (DataTools)list.Where(x => BsonSerializer.Deserialize<DataTools>(x).Id == id);//First(x => BsonSerializer.Deserialize<DataTools>(x).Id == id);//    Where(x => BsonSerializer.Deserialize<DataTools>(x).Id == id).Select();
 
-                        //foreach (var doc in list)
-                        //{
-                        //    var temp = BsonSerializer.Deserialize<DataTools>(doc).Id;
+                        foreach (var doc in list)
+                        {
+                            var temp = BsonSerializer.Deserialize<DataTools>(doc).Id;
 
-                        //    if (temp == id)
-                        //        return BsonSerializer.Deserialize<DataTools>(doc);
-                        //}
+                            if (temp == id)
+                                return BsonSerializer.Deserialize<DataTools>(doc);
+                        }
                     }
                 }
             }

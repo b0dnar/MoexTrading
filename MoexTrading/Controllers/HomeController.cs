@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MoexTrading.Models;
 
-
-using Mercatum.CGate;
 
 using ru.micexrts.cgate;
 
@@ -18,6 +17,13 @@ namespace MoexTrading.Controllers
 
 
             ViewBag.Title = "Home Page";
+
+            return View();
+        }
+
+        public ActionResult TotalInfo()
+        {
+            ViewBag.List = APIMongo.GetTools();
 
             return View();
         }

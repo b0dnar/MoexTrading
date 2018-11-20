@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "TotalInfo";
+}
+
+<html>
+<body>
+    <table style="width:100%">
+        @foreach (var item in ViewBag.List)
+        {
+        <tr>
+            <th>@item.Id</th>
+            <th>@item.Name</th>
+        </tr>
+        }
+    </table>
+</body>
+</html>
+

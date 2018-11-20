@@ -4,21 +4,21 @@ using ru.micexrts.cgate;
 
 namespace MoexTrading.Plaza.Schemes
 {
-    public class fut_instruments
+    public class fut_sess_contents
     {
-        public const int table_index = 3;
+        public const int table_index = 1;
         private UnmanagedMemoryStream stream;
         private int offset;
         private BinaryReader reader;
         private BinaryWriter writer;
-
-        public fut_instruments(UnmanagedMemoryStream stream_)
+        
+        public fut_sess_contents(UnmanagedMemoryStream stream_)
         {
             Data = stream_;
             offset = 0;
         }
 
-        public fut_instruments(UnmanagedMemoryStream stream_, int offset_)
+        public fut_sess_contents(UnmanagedMemoryStream stream_, int offset_)
         {
             Data = stream_;
             offset = offset_;
@@ -51,6 +51,7 @@ namespace MoexTrading.Plaza.Schemes
             if (reader == null)
                 reader = new BinaryReader(stream);
         }
+
         private void checkWriter()
         {
             if (writer == null)
@@ -105,7 +106,7 @@ namespace MoexTrading.Plaza.Schemes
             }
         }
 
-        public int isin_id
+        public int sess_id
         {
             get
             {
@@ -117,6 +118,22 @@ namespace MoexTrading.Plaza.Schemes
             {
                 checkWriter();
                 stream.Position = offset + 24;
+                writer.Write(value);
+            }
+        }
+
+        public int isin_id
+        {
+            get
+            {
+                checkReader();
+                stream.Position = offset + 28;
+                return reader.ReadInt32();
+            }
+            set
+            {
+                checkWriter();
+                stream.Position = offset + 28;
                 writer.Write(value);
             }
         }
@@ -126,13 +143,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 28;
+                stream.Position = offset + 32;
                 return P2TypeParser.ParseCXX(reader, 25);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 28;
+                stream.Position = offset + 32;
                 P2TypeComposer.ComposeCXX(writer, value, 25);
             }
         }
@@ -142,13 +159,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 54;
-                return P2TypeParser.ParseCXX(reader, 25);
+                stream.Position = offset + 58;
+                return ru.micexrts.cgate.P2TypeParser.ParseCXX(reader, 25);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 54;
+                stream.Position = offset + 58;
                 P2TypeComposer.ComposeCXX(writer, value, 25);
             }
         }
@@ -158,13 +175,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 80;
+                stream.Position = offset + 84;
                 return P2TypeParser.ParseCXX(reader, 75);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 80;
+                stream.Position = offset + 84;
                 P2TypeComposer.ComposeCXX(writer, value, 75);
             }
         }
@@ -174,13 +191,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 156;
+                stream.Position = offset + 160;
                 return reader.ReadInt32();
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 156;
+                stream.Position = offset + 160;
                 writer.Write(value);
             }
         }
@@ -190,13 +207,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 160;
+                stream.Position = offset + 164;
                 return P2TypeParser.ParseCXX(reader, 25);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 160;
+                stream.Position = offset + 164;
                 P2TypeComposer.ComposeCXX(writer, value, 25);
             }
         }
@@ -206,14 +223,64 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 186;
+                stream.Position = offset + 190;
                 return reader.ReadSByte();
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 186;
+                stream.Position = offset + 190;
                 writer.Write(value);
+            }
+        }
+
+        public decimal limit_up
+        {
+            get
+            {
+                checkReader();
+                stream.Position = offset + 191;
+                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+            }
+            set
+            {
+                checkWriter();
+                stream.Position = offset + 191;
+                P2TypeComposer.ComposeDecimalAsBCD(writer, "d16.5", (decimal)value);
+            }
+        }
+
+        public byte limit_up_scale
+        {
+            get
+            {
+                stream.Position = offset + 191;
+                return P2TypeParser.ParseBCDAsScale(reader, stream);
+            }
+        }
+
+        public decimal limit_down
+        {
+            get
+            {
+                checkReader();
+                stream.Position = offset + 202;
+                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+            }
+            set
+            {
+                checkWriter();
+                stream.Position = offset + 202;
+                P2TypeComposer.ComposeDecimalAsBCD(writer, "d16.5", (decimal)value);
+            }
+        }
+
+        public byte limit_down_scale
+        {
+            get
+            {
+                stream.Position = offset + 202;
+                return P2TypeParser.ParseBCDAsScale(reader, stream);
             }
         }
 
@@ -222,13 +289,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 187;
+                stream.Position = offset + 213;
                 return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 187;
+                stream.Position = offset + 213;
                 P2TypeComposer.ComposeDecimalAsBCD(writer, "d16.5", (decimal)value);
             }
         }
@@ -237,7 +304,57 @@ namespace MoexTrading.Plaza.Schemes
         {
             get
             {
-                stream.Position = offset + 187;
+                stream.Position = offset + 213;
+                return P2TypeParser.ParseBCDAsScale(reader, stream);
+            }
+        }
+
+        public decimal buy_deposit
+        {
+            get
+            {
+                checkReader();
+                stream.Position = offset + 224;
+                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+            }
+            set
+            {
+                checkWriter();
+                stream.Position = offset + 224;
+                P2TypeComposer.ComposeDecimalAsBCD(writer, "d16.2", (decimal)value);
+            }
+        }
+
+        public byte buy_deposit_scale
+        {
+            get
+            {
+                stream.Position = offset + 224;
+                return P2TypeParser.ParseBCDAsScale(reader, stream);
+            }
+        }
+
+        public decimal sell_deposit
+        {
+            get
+            {
+                checkReader();
+                stream.Position = offset + 234;
+                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+            }
+            set
+            {
+                checkWriter();
+                stream.Position = offset + 234;
+                P2TypeComposer.ComposeDecimalAsBCD(writer, "d16.2", (decimal)value);
+            }
+        }
+
+        public byte sell_deposit_scale
+        {
+            get
+            {
+                stream.Position = offset + 234;
                 return P2TypeParser.ParseBCDAsScale(reader, stream);
             }
         }
@@ -247,13 +364,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 200;
+                stream.Position = offset + 244;
                 return reader.ReadInt32();
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 200;
+                stream.Position = offset + 244;
                 writer.Write(value);
             }
         }
@@ -263,13 +380,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 204;
+                stream.Position = offset + 248;
                 return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 204;
+                stream.Position = offset + 248;
                 P2TypeComposer.ComposeDecimalAsBCD(writer, "d16.5", (decimal)value);
             }
         }
@@ -278,7 +395,7 @@ namespace MoexTrading.Plaza.Schemes
         {
             get
             {
-                stream.Position = offset + 204;
+                stream.Position = offset + 248;
                 return P2TypeParser.ParseBCDAsScale(reader, stream);
             }
         }
@@ -288,13 +405,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 216;
+                stream.Position = offset + 260;
                 return reader.ReadInt32();
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 216;
+                stream.Position = offset + 260;
                 writer.Write(value);
             }
         }
@@ -304,13 +421,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 220;
+                stream.Position = offset + 264;
                 return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 220;
+                stream.Position = offset + 264;
                 P2TypeComposer.ComposeDecimalAsBCD(writer, "d16.5", (decimal)value);
             }
         }
@@ -319,7 +436,7 @@ namespace MoexTrading.Plaza.Schemes
         {
             get
             {
-                stream.Position = offset + 220;
+                stream.Position = offset + 264;
                 return P2TypeParser.ParseBCDAsScale(reader, stream);
             }
         }
@@ -329,13 +446,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 232;
+                stream.Position = offset + 276;
                 return P2TypeParser.ParseTimeAsDate(reader);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 232;
+                stream.Position = offset + 276;
                 P2TypeComposer.ComposeDateAsTime(writer, value);
             }
         }
@@ -345,13 +462,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 242;
+                stream.Position = offset + 286;
                 return reader.ReadSByte();
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 242;
+                stream.Position = offset + 286;
                 writer.Write(value);
             }
         }
@@ -361,13 +478,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 244;
+                stream.Position = offset + 288;
                 return P2TypeParser.ParseTimeAsDate(reader);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 244;
+                stream.Position = offset + 288;
                 P2TypeComposer.ComposeDateAsTime(writer, value);
             }
         }
@@ -377,13 +494,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 254;
+                stream.Position = offset + 298;
                 return reader.ReadSByte();
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 254;
+                stream.Position = offset + 298;
                 writer.Write(value);
             }
         }
@@ -393,13 +510,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 255;
+                stream.Position = offset + 299;
                 return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 255;
+                stream.Position = offset + 299;
                 P2TypeComposer.ComposeDecimalAsBCD(writer, "d6.2", (decimal)value);
             }
         }
@@ -408,7 +525,7 @@ namespace MoexTrading.Plaza.Schemes
         {
             get
             {
-                stream.Position = offset + 255;
+                stream.Position = offset + 299;
                 return P2TypeParser.ParseBCDAsScale(reader, stream);
             }
         }
@@ -418,13 +535,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 260;
+                stream.Position = offset + 304;
                 return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 260;
+                stream.Position = offset + 304;
                 P2TypeComposer.ComposeDecimalAsBCD(writer, "d16.5", (decimal)value);
             }
         }
@@ -433,7 +550,7 @@ namespace MoexTrading.Plaza.Schemes
         {
             get
             {
-                stream.Position = offset + 260;
+                stream.Position = offset + 304;
                 return P2TypeParser.ParseBCDAsScale(reader, stream);
             }
         }
@@ -443,64 +560,62 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 272;
+                stream.Position = offset + 316;
                 return reader.ReadInt32();
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 272;
+                stream.Position = offset + 316;
                 writer.Write(value);
             }
         }
 
-        public decimal volat_min
+        public sbyte is_trade_evening
         {
             get
             {
                 checkReader();
-                stream.Position = offset + 276;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                stream.Position = offset + 320;
+                return reader.ReadSByte();
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 276;
-                P2TypeComposer.ComposeDecimalAsBCD(writer, "d20.15", (decimal)value);
+                stream.Position = offset + 320;
+                writer.Write(value);
             }
         }
 
-        public byte volat_min_scale
-        {
-            get
-            {
-                stream.Position = offset + 276;
-                return P2TypeParser.ParseBCDAsScale(reader, stream);
-            }
-        }
-
-        public decimal volat_max
+        public int ticker
         {
             get
             {
                 checkReader();
-                stream.Position = offset + 289;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                stream.Position = offset + 324;
+                return reader.ReadInt32();
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 289;
-                P2TypeComposer.ComposeDecimalAsBCD(writer, "d20.15", (decimal)value);
+                stream.Position = offset + 324;
+                writer.Write(value);
             }
         }
 
-        public byte volat_max_scale
+        public int state
         {
             get
             {
-                stream.Position = offset + 289;
-                return P2TypeParser.ParseBCDAsScale(reader, stream);
+                checkReader();
+                stream.Position = offset + 328;
+                return reader.ReadInt32();
+            }
+            set
+            {
+                checkWriter();
+                stream.Position = offset + 328;
+                writer.Write(value);
             }
         }
 
@@ -509,13 +624,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 302;
+                stream.Position = offset + 332;
                 return reader.ReadSByte();
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 302;
+                stream.Position = offset + 332;
                 writer.Write(value);
             }
         }
@@ -525,13 +640,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 304;
+                stream.Position = offset + 336;
                 return reader.ReadInt32();
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 304;
+                stream.Position = offset + 336;
                 writer.Write(value);
             }
         }
@@ -541,13 +656,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 308;
+                stream.Position = offset + 340;
                 return reader.ReadInt32();
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 308;
+                stream.Position = offset + 340;
                 writer.Write(value);
             }
         }
@@ -557,13 +672,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 312;
+                stream.Position = offset + 344;
                 return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 312;
+                stream.Position = offset + 344;
                 P2TypeComposer.ComposeDecimalAsBCD(writer, "d16.5", (decimal)value);
             }
         }
@@ -572,7 +687,7 @@ namespace MoexTrading.Plaza.Schemes
         {
             get
             {
-                stream.Position = offset + 312;
+                stream.Position = offset + 344;
                 return P2TypeParser.ParseBCDAsScale(reader, stream);
             }
         }
@@ -582,13 +697,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 323;
+                stream.Position = offset + 355;
                 return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 323;
+                stream.Position = offset + 355;
                 P2TypeComposer.ComposeDecimalAsBCD(writer, "d16.5", (decimal)value);
             }
         }
@@ -597,7 +712,7 @@ namespace MoexTrading.Plaza.Schemes
         {
             get
             {
-                stream.Position = offset + 323;
+                stream.Position = offset + 355;
                 return P2TypeParser.ParseBCDAsScale(reader, stream);
             }
         }
@@ -607,13 +722,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 334;
+                stream.Position = offset + 366;
                 return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 334;
+                stream.Position = offset + 366;
                 P2TypeComposer.ComposeDecimalAsBCD(writer, "d16.5", (decimal)value);
             }
         }
@@ -622,7 +737,7 @@ namespace MoexTrading.Plaza.Schemes
         {
             get
             {
-                stream.Position = offset + 334;
+                stream.Position = offset + 366;
                 return P2TypeParser.ParseBCDAsScale(reader, stream);
             }
         }
@@ -632,146 +747,39 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 346;
+                stream.Position = offset + 378;
                 return P2TypeParser.ParseTimeAsDate(reader);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 346;
+                stream.Position = offset + 378;
                 P2TypeComposer.ComposeDateAsTime(writer, value);
             }
         }
 
-        public sbyte is_limit_opt
+        public decimal exch_pay
         {
             get
             {
                 checkReader();
-                stream.Position = offset + 356;
-                return reader.ReadSByte();
-            }
-            set
-            {
-                checkWriter();
-                stream.Position = offset + 356;
-                writer.Write(value);
-            }
-        }
-
-        public decimal limit_up_opt
-        {
-            get
-            {
-                checkReader();
-                stream.Position = offset + 357;
+                stream.Position = offset + 388;
                 return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 357;
-                P2TypeComposer.ComposeDecimalAsBCD(writer, "d5.2", (decimal)value);
-            }
-        }
-
-        public byte limit_up_opt_scale
-        {
-            get
-            {
-                stream.Position = offset + 357;
-                return P2TypeParser.ParseBCDAsScale(reader, stream);
-            }
-        }
-
-        public decimal limit_down_opt
-        {
-            get
-            {
-                checkReader();
-                stream.Position = offset + 362;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
-            }
-            set
-            {
-                checkWriter();
-                stream.Position = offset + 362;
-                P2TypeComposer.ComposeDecimalAsBCD(writer, "d5.2", (decimal)value);
-            }
-        }
-
-        public byte limit_down_opt_scale
-        {
-            get
-            {
-                stream.Position = offset + 362;
-                return P2TypeParser.ParseBCDAsScale(reader, stream);
-            }
-        }
-
-        public decimal adm_lim
-        {
-            get
-            {
-                checkReader();
-                stream.Position = offset + 367;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
-            }
-            set
-            {
-                checkWriter();
-                stream.Position = offset + 367;
+                stream.Position = offset + 388;
                 P2TypeComposer.ComposeDecimalAsBCD(writer, "d16.5", (decimal)value);
             }
         }
 
-        public byte adm_lim_scale
+        public byte exch_pay_scale
         {
             get
             {
-                stream.Position = offset + 367;
+                stream.Position = offset + 388;
                 return P2TypeParser.ParseBCDAsScale(reader, stream);
-            }
-        }
-
-        public decimal adm_lim_offmoney
-        {
-            get
-            {
-                checkReader();
-                stream.Position = offset + 378;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
-            }
-            set
-            {
-                checkWriter();
-                stream.Position = offset + 378;
-                P2TypeComposer.ComposeDecimalAsBCD(writer, "d16.5", (decimal)value);
-            }
-        }
-
-        public byte adm_lim_offmoney_scale
-        {
-            get
-            {
-                stream.Position = offset + 378;
-                return P2TypeParser.ParseBCDAsScale(reader, stream);
-            }
-        }
-
-        public sbyte apply_adm_limit
-        {
-            get
-            {
-                checkReader();
-                stream.Position = offset + 389;
-                return reader.ReadSByte();
-            }
-            set
-            {
-                checkWriter();
-                stream.Position = offset + 389;
-                writer.Write(value);
             }
         }
 
@@ -780,13 +788,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 390;
+                stream.Position = offset + 399;
                 return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 390;
+                stream.Position = offset + 399;
                 P2TypeComposer.ComposeDecimalAsBCD(writer, "d16.5", (decimal)value);
             }
         }
@@ -795,7 +803,7 @@ namespace MoexTrading.Plaza.Schemes
         {
             get
             {
-                stream.Position = offset + 390;
+                stream.Position = offset + 399;
                 return P2TypeParser.ParseBCDAsScale(reader, stream);
             }
         }
@@ -805,13 +813,13 @@ namespace MoexTrading.Plaza.Schemes
             get
             {
                 checkReader();
-                stream.Position = offset + 401;
+                stream.Position = offset + 410;
                 return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
             }
             set
             {
                 checkWriter();
-                stream.Position = offset + 401;
+                stream.Position = offset + 410;
                 P2TypeComposer.ComposeDecimalAsBCD(writer, "d16.5", (decimal)value);
             }
         }
@@ -820,24 +828,8 @@ namespace MoexTrading.Plaza.Schemes
         {
             get
             {
-                stream.Position = offset + 401;
+                stream.Position = offset + 410;
                 return P2TypeParser.ParseBCDAsScale(reader, stream);
-            }
-        }
-
-        public string exec_name
-        {
-            get
-            {
-                checkReader();
-                stream.Position = offset + 412;
-                return P2TypeParser.ParseCXX(reader, 1);
-            }
-            set
-            {
-                checkWriter();
-                stream.Position = offset + 412;
-                P2TypeComposer.ComposeCXX(writer, value, 1);
             }
         }
     }
