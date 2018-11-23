@@ -171,34 +171,56 @@ namespace MoexTrading.Plaza.Job
                         }
                     }
 
-
-                    var dataDay = APIMongo.GetCandlesDayById(id, ElementMongo.NameTableCandlesOnDays).Result;
-
-                    if (com.close_price_scale == 0)
-                        return 0;
-
-                    Price price;
-
-                    price.Max = com.max_price_scale;
-                    price.Min = com.min_price_scale;
-                    price.Open = com.open_price_scale;
-                    price.Close = com.close_price_scale;
-                    price.Time = com.deal_time;
-
-                    if (dataDay == null)
+                    if (com.close_price_scale > 0)
                     {
-                        dataDay = new DataCandlesDay();
+                        Price price  = new Price();
+                        price.Max = com.max_price_scale;
+                        price.Min = com.min_price_scale;
+                        price.Open = com.open_price_scale;
+                        price.Close = com.close_price_scale;
+                        price.Time = com.deal_time;
 
-                        dataDay.Id = id;
-                        dataDay.ArrayPrices.Add(price);
+                        var dataDay = APIMongo.GetCandlesDayById(id, ElementMongo.NameTableCandlesOnDays).Result;
 
-                        APIMongo.SetCandles(dataDay.ToBsonDocument(), ElementMongo.NameTableCandlesOnDays);
+                        if (dataDay == null)
+                        {
+                            dataDay = new DataCandlesDay();
+
+                            dataDay.Id = id;
+                            dataDay.ArrayPrices.Add(price);
+
+                            APIMongo.SetCandles(dataDay.ToBsonDocument(), ElementMongo.NameTableCandlesOnDays);
+                        }
+                        else
+                        {
+                            dataDay.ArrayPrices.Add(price);
+
+                            APIMongo.UpdateCandlesDay(dataDay, ElementMongo.NameTableCandlesOnDays);
+                        }
                     }
-                    else
+                        
+                    if(com.cur_kotir_scale > 0)
                     {
-                        dataDay.ArrayPrices.Add(price);
+                        var curKotir = new DataKotirovka();
+                        curKotir.Id = id;
+                        curKotir.Value = com.cur_kotir_scale;
 
-                        APIMongo.UpdateCandlesDay(dataDay, ElementMongo.NameTableCandlesOnDays);
+                        var dataKotir = APIMongo.GetKotirovkaById(id).Result;
+
+                        if(dataKotir == null)
+                        {
+                            APIMongo.SetKotirovka(curKotir.ToBsonDocument());
+                        }
+                        else
+                        {
+                            if (dataKotir.Value == curKotir.Value)
+                                return 0;
+
+                            curKotir.Diference = dataKotir.Value - curKotir.Value;
+                            curKotir.Percent = curKotir.Diference * 100 / curKotir.Value;
+
+                            APIMongo.UpdateKotirovka(curKotir);
+                        }
                     }
                 }
 
@@ -216,8 +238,6 @@ namespace MoexTrading.Plaza.Job
             {
                 if (msg.Type == MessageType.MsgStreamData)
                 {
-                    //APIMongo.Dell();
-
                     StreamDataMessage replmsg = (StreamDataMessage)msg;
                     orders_aggr glass = new orders_aggr(replmsg.Data);
                     int id = glass.isin_id;

@@ -37,6 +37,8 @@ namespace MoexTrading.Models
                     return "CandlesOnWeeks";
                 case ElementMongo.NameTableCandlesOnMonths:
                     return "CandlesOnMonths";
+                case ElementMongo.NameTableKotirovka:
+                    return "Kotirovka";
                 case ElementMongo.NameTableGlass:
                     return "Glass";
                 default:
@@ -60,6 +62,7 @@ namespace MoexTrading.Models
         NameTableCandlesOnDays,
         NameTableCandlesOnWeeks,
         NameTableCandlesOnMonths,
+        NameTableKotirovka,
         NameTableGlass
     }
 
