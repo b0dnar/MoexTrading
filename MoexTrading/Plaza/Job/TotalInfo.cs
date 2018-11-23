@@ -23,7 +23,7 @@ namespace MoexTrading.Plaza.Job
             string streamInfo = "FORTS_FUTINFO_REPL", tableTools = "fut_sess_contents", streamCommonn = "FORTS_FUTCOMMON_REPL", tableCandles = "common", streamGlass = "FORTS_FUTAGGR50_REPL";
             string strConnectInfo = "p2repl://" + streamInfo + ";tables=" + tableTools;
             string strConnectCommon = "p2repl://" + streamCommonn + ";tables=" + tableCandles;
-            string strConnectGlass = "p2repl://" + streamCommonn;
+            string strConnectGlass = "p2repl://" + streamGlass;
 
             CGate.Open("ini=/Plaza/bin/cgate.ini;key=11111111");
             CGate.LogInfo("test .Net log.");
@@ -216,16 +216,18 @@ namespace MoexTrading.Plaza.Job
             {
                 if (msg.Type == MessageType.MsgStreamData)
                 {
+                    //APIMongo.Dell();
+
                     StreamDataMessage replmsg = (StreamDataMessage)msg;
                     orders_aggr glass = new orders_aggr(replmsg.Data);
                     int id = glass.isin_id;
 
-                    if (glass.volume == 0 || glass.price_scale == 0 || glass.dir == 0)
+                    if (glass.volume == 0 || glass.price_scale == 0)
                         return 0;
 
                     var data = APIMongo.GetGlassById(id).Result;
 
-                    Glass gl;
+                    Glass gl = new Glass();
                     gl.Price = glass.price_scale;
                     gl.Volum = glass.volume;
                     gl.Dir = glass.dir;

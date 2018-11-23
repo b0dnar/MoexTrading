@@ -48,11 +48,11 @@ namespace MoexTrading.Models
         }
     }
 
-    public struct Glass
+    public class Glass
     {
-        public decimal Price;
-        public decimal Volum;
-        public sbyte Dir;
+        public decimal Price { get; set; }
+        public decimal Volum { get; set; }
+        public sbyte Dir { get; set; }
     }
 
     public class DataGlass
