@@ -232,6 +232,7 @@ namespace MoexTrading.Models
             try
             {
                 var collection = database.GetCollection<BsonDocument>(nameCollection);
+
                 var filter = new BsonDocument();
                 using (var cursor = await collection.FindAsync(filter))
                 {
@@ -243,9 +244,7 @@ namespace MoexTrading.Models
 
                         foreach (var doc in list)
                         {
-                            var temp = BsonSerializer.Deserialize<DataGlass>(doc).Id;
-
-                            if (temp == id)
+                            if (doc["_id"] == id)
                                 return BsonSerializer.Deserialize<DataGlass>(doc);
                         }
                     }
@@ -273,5 +272,10 @@ namespace MoexTrading.Models
         }
 
         #endregion
+
+        public static void Dell()
+        {
+            database.DropCollection(InfoMongo.GetElementMongo(ElementMongo.NameTableGlass));
+        }
     }
 }
