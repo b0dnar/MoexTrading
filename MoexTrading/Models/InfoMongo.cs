@@ -19,24 +19,26 @@ namespace MoexTrading.Models
                     return "Tools";
                 case ElementMongo.NameTableCandlesOnTik:
                     return "CandlesOnTiky";
-                case ElementMongo.NameTableDataCandlesOn1Min:
+                case ElementMongo.NameTableCandlesOn1Min:
                     return "CandlesOn1Min";
-                case ElementMongo.NameTableDataCandlesOn5Min:
+                case ElementMongo.NameTableCandlesOn5Min:
                     return "CandlesOn5Min";
-                case ElementMongo.NameTableDataCandlesOn15Min:
+                case ElementMongo.NameTableCandlesOn15Min:
                     return "CandlesOn15Min";
-                case ElementMongo.NameTableDataCandlesOn1Hour:
+                case ElementMongo.NameTableCandlesOn1Hour:
                     return "CandlesOn1Hour";
-                case ElementMongo.NameTableDataCandlesOn4Hour:
+                case ElementMongo.NameTableCandlesOn4Hour:
                     return "CandlesOn4Hour";
-                case ElementMongo.NameTableDataCandlesOn5Hour:
+                case ElementMongo.NameTableCandlesOn5Hour:
                     return "CandlesOn5Hour";
-                case ElementMongo.NameTableDataCandlesOnDays:
+                case ElementMongo.NameTableCandlesOnDays:
                     return "CandlesOnDays";
-                case ElementMongo.NameTableDataCandlesOnWeeks:
+                case ElementMongo.NameTableCandlesOnWeeks:
                     return "CandlesOnWeeks";
-                case ElementMongo.NameTableDataCandlesOnMonths:
+                case ElementMongo.NameTableCandlesOnMonths:
                     return "CandlesOnMonths";
+                case ElementMongo.NameTableGlass:
+                    return "Glass";
                 default:
                     return "";
             }
@@ -49,15 +51,16 @@ namespace MoexTrading.Models
         NameBD,
         NameTableTools,
         NameTableCandlesOnTik,
-        NameTableDataCandlesOn1Min,
-        NameTableDataCandlesOn5Min,
-        NameTableDataCandlesOn15Min,
-        NameTableDataCandlesOn1Hour,
-        NameTableDataCandlesOn4Hour,
-        NameTableDataCandlesOn5Hour,
-        NameTableDataCandlesOnDays,
-        NameTableDataCandlesOnWeeks,
-        NameTableDataCandlesOnMonths
+        NameTableCandlesOn1Min,
+        NameTableCandlesOn5Min,
+        NameTableCandlesOn15Min,
+        NameTableCandlesOn1Hour,
+        NameTableCandlesOn4Hour,
+        NameTableCandlesOn5Hour,
+        NameTableCandlesOnDays,
+        NameTableCandlesOnWeeks,
+        NameTableCandlesOnMonths,
+        NameTableGlass
     }
 
 }

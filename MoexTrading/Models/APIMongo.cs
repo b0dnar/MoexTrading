@@ -82,7 +82,7 @@ namespace MoexTrading.Models
 
                 var result = await collection.UpdateOneAsync(filter, update);
             }
-            catch (Exception e) { }
+            catch { }
         }
 
         #endregion
@@ -187,7 +187,7 @@ namespace MoexTrading.Models
 
                 var result = await collection.UpdateOneAsync(filter, update);
             }
-            catch (Exception e) { }
+            catch { }
         }
 
         public static async void UpdateCandlesDay(DataCandlesDay newData, ElementMongo nameTable)
@@ -203,49 +203,75 @@ namespace MoexTrading.Models
 
                 var result = await collection.UpdateOneAsync(filter, update);
             }
-            catch (Exception e) { }
+            catch { }
         }
 
         #endregion
 
-        //public async void SetData(BsonDocument doc, string nameCollection)
-        //{
-        //    var collection = database.GetCollection<BsonDocument>(nameCollection);
-        //    await collection.InsertOneAsync(doc);
-        //}
+        #region Methodes from DataGlass
 
-        ////get info for instrumetn. Return collection with have name and id instrument
-        //public List<InfoTools> GetData(string nameCollection)
-        //{
-        //    var collection = database.GetCollection<InfoTools>(nameCollection).AsQueryable().ToList();//Select(x=>x.InstrumentName).
+        public static async void SetGlass(BsonDocument doc)
+        {
+            string nameCollection = InfoMongo.GetElementMongo(ElementMongo.NameTableGlass);
+            var collection = database.GetCollection<BsonDocument>(nameCollection);
+            await collection.InsertOneAsync(doc);
+        }
 
-        //    return collection;
+        public static List<DataGlass> GetGlass()
+        {
+            string nameCollection = InfoMongo.GetElementMongo(ElementMongo.NameTableGlass);
+            var collection = database.GetCollection<DataGlass>(nameCollection).AsQueryable();
 
-        //}
+            return collection.ToList();
+        }
 
-        ////get info for candles by id instrument
-        //public List<DataCommon> GetCandlesById(int id)
-        //{
-        //    var collection = database.GetCollection<DataCommon>("DatasCandles").AsQueryable().Where(x => x.IdSess == id).ToList();//
+        public static async Task<DataGlass> GetGlassById(int id)
+        {
+            string nameCollection = InfoMongo.GetElementMongo(ElementMongo.NameTableGlass);
 
-        //    return collection;
-        //}
+            try
+            {
+                var collection = database.GetCollection<BsonDocument>(nameCollection);
+                var filter = new BsonDocument();
+                using (var cursor = await collection.FindAsync(filter))
+                {
+                    while (await cursor.MoveNextAsync())
+                    {
+                        var list = cursor.Current.ToList();
+                        if (list.Count == 0)
+                            return null;
 
-        //public List<DataCotirovks> GetCotirovka()
-        //{
-        //    var collection = database.GetCollection<DataCotirovks>("BDCotirovka").AsQueryable().ToList();//
+                        foreach (var doc in list)
+                        {
+                            var temp = BsonSerializer.Deserialize<DataGlass>(doc).Id;
 
-        //    return collection;
-        //}
+                            if (temp == id)
+                                return BsonSerializer.Deserialize<DataGlass>(doc);
+                        }
+                    }
+                }
+            }
+            catch(Exception e) { }
 
-        //public DataOrder GetStakanById(int id)
-        //{
-        //    var collection = database.GetCollection<DataOrder>("BDStakan").AsQueryable().Where(x => x.Id == id).ToList();
+            return null;
+        }
 
-        //    if (collection.Count == 0)
-        //        return null;
+        public static async void UpdateGlass(DataGlass newData)
+        {
+            string nameCollection = InfoMongo.GetElementMongo(ElementMongo.NameTableGlass);
 
-        //    return collection[0];
-        //}
+            try
+            {
+                var collection = database.GetCollection<DataGlass>(nameCollection);
+
+                var filter = Builders<DataGlass>.Filter.Eq("_id", newData.Id);
+                var update = Builders<DataGlass>.Update.Set("ArrayGlass", newData.ArrayGlass);
+
+                var result = await collection.UpdateOneAsync(filter, update);
+            }
+            catch { }
+        }
+
+        #endregion
     }
 }
