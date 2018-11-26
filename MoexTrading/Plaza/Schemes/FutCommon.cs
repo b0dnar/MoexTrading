@@ -339,7 +339,14 @@ namespace MoexTrading.Plaza.Schemes
             {
                 checkReader();
                 stream.Position = offset + 118;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                decimal rez;
+                try
+                {
+                    rez = (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                }
+                catch { return 0; }
+
+                return rez;
             }
             set
             {

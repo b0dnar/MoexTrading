@@ -17,15 +17,13 @@ namespace MoexTrading.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        //[HttpGet]
-        //public List<DataCommon> GetDataCommon()
-        //{
-        //    APIMongo mongo = new APIMongo();
+        public DataCandlesTik PostDataCandles([FromBody]JObject value)
+        {
+            int id = (int)value["Id"];
+            var list = APIMongo.GetCandlesTikById(id, ElementMongo.NameTableCandlesOnTik);
 
-        //    var list = mongo.GetCandlesById(554596);
-
-        //    return list;
-        //}
+            return list;
+        }
 
         public object GetDataKotirovka()
         {

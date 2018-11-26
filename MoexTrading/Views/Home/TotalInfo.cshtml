@@ -15,6 +15,7 @@
                 </div>
                 <div class="col-md-7">
                     <select class="form-control" onchange="myFunction()" id="test">
+                        <option value="0">Выбирете инструмент</option>
                         @foreach (var b in ViewBag.NameInstrument)
                         {
                             <option value="@b.Id">@b.Name</option>

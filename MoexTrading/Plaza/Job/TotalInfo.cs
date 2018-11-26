@@ -143,15 +143,15 @@ namespace MoexTrading.Plaza.Job
                     common com = new common(replmsg.Data);
                     int id = com.isin_id;
 
-                    var dataTik = APIMongo.GetCandlesTikById(id, ElementMongo.NameTableCandlesOnTik).Result;
+                    var dataTik = APIMongo.GetCandlesTikById(id, ElementMongo.NameTableCandlesOnTik);
 
-                    if (com.price_scale > 0)
+                    if (com.price > 0)
                     {
                         if (dataTik == null)
                         {
                             DataCandlesTik data = new DataCandlesTik();
                             data.Id = id;
-                            data.ArrayCandles.Add(com.price_scale);
+                            data.ArrayCandles.Add(com.price);
 
                             APIMongo.SetCandles(data.ToBsonDocument(), ElementMongo.NameTableCandlesOnTik);
                         }
@@ -159,9 +159,9 @@ namespace MoexTrading.Plaza.Job
                         {
                             int countElement = dataTik.ArrayCandles.Count;
 
-                            if (dataTik.ArrayCandles[countElement - 1] != com.price_scale)
+                            if (dataTik.ArrayCandles[countElement - 1] != com.price)
                             {
-                                dataTik.ArrayCandles.Add(com.price_scale);
+                                dataTik.ArrayCandles.Add(com.price);
                                 dataTik.ArrayMax.Add(com.max_price_scale);
                                 dataTik.ArrayMin.Add(com.min_price_scale);
                                 dataTik.ArrayTime.Add(com.deal_time);
