@@ -273,9 +273,70 @@ namespace MoexTrading.Models
 
         #endregion
 
-        public static void Dell()
+        #region Methodes from DataKotirovka
+
+        public static async void SetKotirovka(BsonDocument doc)
         {
-            database.DropCollection(InfoMongo.GetElementMongo(ElementMongo.NameTableGlass));
+            string nameCollection = InfoMongo.GetElementMongo(ElementMongo.NameTableKotirovka);
+            var collection = database.GetCollection<BsonDocument>(nameCollection);
+            await collection.InsertOneAsync(doc);
         }
+
+        public static List<DataKotirovka> GetKotirovka()
+        {
+            string nameCollection = InfoMongo.GetElementMongo(ElementMongo.NameTableKotirovka);
+            var collection = database.GetCollection<DataKotirovka>(nameCollection).AsQueryable();
+
+            return collection.ToList();
+        }
+
+        public static async Task<DataKotirovka> GetKotirovkaById(int id)
+        {
+            string nameCollection = InfoMongo.GetElementMongo(ElementMongo.NameTableKotirovka);
+
+            try
+            {
+                var collection = database.GetCollection<BsonDocument>(nameCollection);
+
+                var filter = new BsonDocument();
+                using (var cursor = await collection.FindAsync(filter))
+                {
+                    while (await cursor.MoveNextAsync())
+                    {
+                        var list = cursor.Current.ToList();
+                        if (list.Count == 0)
+                            return null;
+
+                        foreach (var doc in list)
+                        {
+                            if (doc["_id"] == id)
+                                return BsonSerializer.Deserialize<DataKotirovka>(doc);
+                        }
+                    }
+                }
+            }
+            catch (Exception e) { }
+
+            return null;
+        }
+
+        public static async void UpdateKotirovka(DataKotirovka newData)
+        {
+            string nameCollection = InfoMongo.GetElementMongo(ElementMongo.NameTableKotirovka);
+
+            try
+            {
+                var collection = database.GetCollection<DataKotirovka>(nameCollection);
+
+                var filter = Builders<DataKotirovka>.Filter.Eq("_id", newData.Id);
+                var update = Builders<DataKotirovka>.Update.Set("Value", newData.Value).Set("Diference", newData.Diference).Set("Percent", newData.Percent);
+
+                var result = await collection.UpdateOneAsync(filter, update);
+            }
+            catch { }
+        }
+
+        #endregion
+
     }
 }

@@ -28,13 +28,13 @@ namespace MoexTrading.Models
         }
     }
 
-    public struct Price
+    public class Price
     {
-        public decimal Open;
-        public decimal Close;
-        public decimal Min;
-        public decimal Max;
-        public DateTime Time;
+        public decimal Open { get; set; }
+        public decimal Close { get; set; }
+        public decimal Min { get; set; }
+        public decimal Max { get; set; }
+        public DateTime Time { get; set; }
     }
 
     public class DataCandlesDay
@@ -46,6 +46,14 @@ namespace MoexTrading.Models
         {
             ArrayPrices = new List<Price>();
         }
+    }
+
+    public class DataKotirovka
+    {
+        public int Id { get; set; }
+        public decimal Value { get; set; }
+        public decimal Diference { get; set; }
+        public decimal Percent { get; set; }
     }
 
     public class Glass
