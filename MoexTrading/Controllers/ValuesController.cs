@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using MoexTrading.Models;
+using Newtonsoft.Json.Linq;
 
 namespace MoexTrading.Controllers
 {
@@ -13,6 +15,40 @@ namespace MoexTrading.Controllers
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
+        }
+
+        //[HttpGet]
+        //public List<DataCommon> GetDataCommon()
+        //{
+        //    APIMongo mongo = new APIMongo();
+
+        //    var list = mongo.GetCandlesById(554596);
+
+        //    return list;
+        //}
+
+        public object GetDataKotirovka()
+        {
+            var listCotir = APIMongo.GetKotirovka();// .GetCotirovka();
+            var listInfo = APIMongo.GetTools();// .GetData("NameInstruments");
+
+
+            var result = from a in listCotir
+                         join b in listInfo on a.Id equals b.Id
+                         select new { Name = b.Name, Kotir = a.Value, Diference = a.Diference, Percent = a.Percent};
+
+            return result;
+        }
+
+        public object PostSetStakan([FromBody]JObject value)
+        {
+            int id = (int)value["Id"];
+            var data = APIMongo.GetGlassById(id);
+
+            if (data == null)
+                return null;
+
+            return data.ArrayGlass;
         }
 
         // GET api/values/5

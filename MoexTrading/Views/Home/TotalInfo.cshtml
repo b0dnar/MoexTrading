@@ -1,19 +1,66 @@
-﻿
-@{
-    ViewBag.Title = "TotalInfo";
-}
-
-<html>
+﻿<html>
+<head>
+    <style>
+    </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
 <body>
-    <table style="width:100%">
-        @foreach (var item in ViewBag.List)
-        {
-        <tr>
-            <th>@item.Id</th>
-            <th>@item.Name</th>
-        </tr>
-        }
-    </table>
+
+    <div class="row page-header">
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-md-5">
+                    <h4>Инструменты:</h4>
+                </div>
+                <div class="col-md-7">
+                    <select class="form-control" onchange="myFunction()" id="test">
+                        @foreach (var b in ViewBag.NameInstrument)
+                        {
+                            <option value="@b.Id">@b.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-3">
+                    <h4>Тайм фреймы:</h4>
+                </div>
+                <div class="col-md-9">
+                    <button type="button" class="btn btn-light">Тик</button>
+                    <button type="button" class="btn btn-light">1 м.</button>
+                    <button type="button" class="btn btn-light">5 м.</button>
+                    <button type="button" class="btn btn-light">15 м.</button>
+                    <button type="button" class="btn btn-light">1 ч.</button>
+                    <button type="button" class="btn btn-light">4 ч.</button>
+                    <button type="button" class="btn btn-light">5 ч.</button>
+                    <button type="button" class="btn btn-light">День</button>
+                    <button type="button" class="btn btn-light">Неделя</button>
+                    <button type="button" class="btn btn-light">Месяць</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-9">
+            <div id="chart_div">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div id="cotirovka-info">
+            </div>
+            <br />
+            <div id="stakan-info">
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts/total-info.js")
+    @Scripts.Render("https://canvasjs.com/assets/script/canvasjs.min.js")
+    @Scripts.Render("https://canvasjs.com/assets/script/jquery-1.11.1.min.js")
 </body>
 </html>
-

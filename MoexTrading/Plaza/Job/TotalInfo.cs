@@ -242,13 +242,13 @@ namespace MoexTrading.Plaza.Job
                     orders_aggr glass = new orders_aggr(replmsg.Data);
                     int id = glass.isin_id;
 
-                    if (glass.volume == 0 || glass.price_scale == 0)
+                    if (glass.volume == 0 || glass.price == 0)
                         return 0;
 
-                    var data = APIMongo.GetGlassById(id).Result;
+                    var data = APIMongo.GetGlassById(id);
 
                     Glass gl = new Glass();
-                    gl.Price = glass.price_scale;
+                    gl.Price = glass.price;
                     gl.Volum = glass.volume;
                     gl.Dir = glass.dir;
 

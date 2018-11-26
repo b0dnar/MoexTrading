@@ -225,30 +225,33 @@ namespace MoexTrading.Models
             return collection.ToList();
         }
 
-        public static async Task<DataGlass> GetGlassById(int id)
+        public static  DataGlass GetGlassById(int id)
         {
             string nameCollection = InfoMongo.GetElementMongo(ElementMongo.NameTableGlass);
 
             try
             {
-                var collection = database.GetCollection<BsonDocument>(nameCollection);
+                var collection = database.GetCollection<DataGlass>(nameCollection).AsQueryable().ToList();
+                return collection.FirstOrDefault(x => x.Id == id);
 
-                var filter = new BsonDocument();
-                using (var cursor = await collection.FindAsync(filter))
-                {
-                    while (await cursor.MoveNextAsync())
-                    {
-                        var list = cursor.Current.ToList();
-                        if (list.Count == 0)
-                            return null;
+                //var collection = database.GetCollection<BsonDocument>(nameCollection);
 
-                        foreach (var doc in list)
-                        {
-                            if (doc["_id"] == id)
-                                return BsonSerializer.Deserialize<DataGlass>(doc);
-                        }
-                    }
-                }
+                //var filter = new BsonDocument();
+                //using (var cursor = await collection.FindAsync(filter))
+                //{
+                //    while (await cursor.MoveNextAsync())
+                //    {
+                //        var list = cursor.Current.ToList();
+                //        if (list.Count == 0)
+                //            return null;
+
+                //        foreach (var doc in list)
+                //        {
+                //            if (doc["_id"] == id)
+                //                return BsonSerializer.Deserialize<DataGlass>(doc);
+                //        }
+                //    }
+                //}
             }
             catch(Exception e) { }
 

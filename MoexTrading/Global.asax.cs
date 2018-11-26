@@ -22,7 +22,6 @@ namespace MoexTrading
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             JobManager.Initialize(new MyRegistry());
-            //TotalInfo.Run();
         }
     }
 }
