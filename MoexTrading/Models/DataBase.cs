@@ -17,14 +17,14 @@ namespace MoexTrading.Models
         public List<decimal> ArrayCandles { get; set; }
         public List<decimal> ArrayMin { get; set; }
         public List<decimal> ArrayMax { get; set; }
-        public List<DateTime> ArrayTime { get; set; }
+        public List<decimal> ArrayTime { get; set; }
 
         public DataCandlesTik()
         {
             ArrayCandles = new List<decimal>();
             ArrayMin = new List<decimal>();
             ArrayMax = new List<decimal>();
-            ArrayTime = new List<DateTime>();
+            ArrayTime = new List<decimal>();
         }
     }
 
@@ -72,5 +72,10 @@ namespace MoexTrading.Models
         {
             ArrayGlass = new List<Glass>();
         }
+    }
+
+    public static class DataServer
+    {
+        public static DateTime Time { get; set; }
     }
 }

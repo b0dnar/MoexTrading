@@ -345,5 +345,8 @@ namespace MoexTrading.Models
 
         #endregion
 
+
+       
+
     }
 }

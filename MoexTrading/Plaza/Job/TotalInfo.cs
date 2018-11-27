@@ -20,10 +20,11 @@ namespace MoexTrading.Plaza.Job
         public static void Run()
         {
 
-            string streamInfo = "FORTS_FUTINFO_REPL", tableTools = "fut_sess_contents", streamCommonn = "FORTS_FUTCOMMON_REPL", tableCandles = "common", streamGlass = "FORTS_FUTAGGR50_REPL";
+            string streamInfo = "FORTS_FUTINFO_REPL", tableTools = "fut_sess_contents", streamCommonn = "FORTS_FUTCOMMON_REPL", tableCandles = "common", streamGlass = "FORTS_FUTAGGR50_REPL", streamTrade = "FORTS_FUTTRADE_REPL", tableTime = "heartbeat";
             string strConnectInfo = "p2repl://" + streamInfo + ";tables=" + tableTools;
             string strConnectCommon = "p2repl://" + streamCommonn + ";tables=" + tableCandles;
             string strConnectGlass = "p2repl://" + streamGlass;
+            string strConnectTime = "p2ordbook://FORTS_ORDLOG_REPL;snapshot=FORTS_ORDBOOK_REPL";
 
             CGate.Open("ini=/Plaza/bin/cgate.ini;key=11111111");
             CGate.LogInfo("test .Net log.");
@@ -37,6 +38,9 @@ namespace MoexTrading.Plaza.Job
 
             Listener listGlass = new Listener(conn, strConnectGlass);
             listGlass.Handler += new Listener.MessageHandler(MessageHandlerGlass);
+
+            Listener listTime = new Listener(conn, strConnectTime);
+            listTime.Handler += new Listener.MessageHandler(MessageHandlerTime);
 
             while (!bExit)
             {
@@ -53,7 +57,7 @@ namespace MoexTrading.Plaza.Job
                     }
                     else if (state == State.Active)
                     {
-                        ErrorCode result = conn.Process(0);
+                        ErrorCode result = conn.Process(1000);
 
                         if (result != ErrorCode.Ok && result != ErrorCode.TimeOut)
                         {
@@ -86,6 +90,15 @@ namespace MoexTrading.Plaza.Job
                         {
                             listGlass.Close();
                         }
+
+                        if (listTime.State == State.Closed)
+                        {
+                            listTime.Open("");
+                        }
+                        else if (listTime.State == State.Error)
+                        {
+                            listTime.Close();
+                        }
                     }
                 }
                 catch (CGateException e)
@@ -101,6 +114,8 @@ namespace MoexTrading.Plaza.Job
             listCommon.Dispose();
             listGlass.Close();
             listGlass.Dispose();
+            listTime.Close();
+            listTime.Dispose();
             conn.Dispose();
             CGate.Close();
         }
@@ -145,13 +160,13 @@ namespace MoexTrading.Plaza.Job
 
                     var dataTik = APIMongo.GetCandlesTikById(id, ElementMongo.NameTableCandlesOnTik);
 
-                    if (com.price > 0)
+                    if (com.price_scale > 0)
                     {
                         if (dataTik == null)
                         {
                             DataCandlesTik data = new DataCandlesTik();
                             data.Id = id;
-                            data.ArrayCandles.Add(com.price);
+                            data.ArrayCandles.Add(com.price_scale);
 
                             APIMongo.SetCandles(data.ToBsonDocument(), ElementMongo.NameTableCandlesOnTik);
                         }
@@ -159,26 +174,35 @@ namespace MoexTrading.Plaza.Job
                         {
                             int countElement = dataTik.ArrayCandles.Count;
 
-                            if (dataTik.ArrayCandles[countElement - 1] != com.price)
+                            if (dataTik.ArrayCandles[countElement - 1] != com.price_scale)
                             {
-                                dataTik.ArrayCandles.Add(com.price);
-                                dataTik.ArrayMax.Add(com.max_price_scale);
-                                dataTik.ArrayMin.Add(com.min_price_scale);
-                                dataTik.ArrayTime.Add(com.deal_time);
+                                dataTik.ArrayCandles.Add(com.price_scale);
+
+                                if (com.max_price_scale == 0)
+                                    dataTik.ArrayMax.Add(dataTik.ArrayCandles[countElement - 1] > dataTik.ArrayCandles[countElement] ? dataTik.ArrayCandles[countElement - 1] : dataTik.ArrayCandles[countElement]);
+                                else
+                                    dataTik.ArrayMax.Add(com.max_price_scale);
+
+                                if (com.min_price_scale == 0)
+                                    dataTik.ArrayMin.Add(dataTik.ArrayCandles[countElement - 1] > dataTik.ArrayCandles[countElement] ? dataTik.ArrayCandles[countElement] : dataTik.ArrayCandles[countElement - 1]);
+                                else
+                                    dataTik.ArrayMin.Add(com.min_price_scale);
+
+                                dataTik.ArrayTime.Add(com.mod_time_ns);
 
                                 APIMongo.UpdateCandlesTik(dataTik, ElementMongo.NameTableCandlesOnTik);
                             }
                         }
                     }
 
-                    if (com.close_price_scale > 0)
+                    if (com.close_price > 0)
                     {
                         Price price  = new Price();
-                        price.Max = com.max_price_scale;
-                        price.Min = com.min_price_scale;
-                        price.Open = com.open_price_scale;
-                        price.Close = com.close_price_scale;
-                        price.Time = com.deal_time;
+                        price.Max = com.max_price;
+                        price.Min = com.min_price;
+                        price.Open = com.open_price;
+                        price.Close = com.close_price;
+                        price.Time = com.mod_time;
 
                         var dataDay = APIMongo.GetCandlesDayById(id, ElementMongo.NameTableCandlesOnDays).Result;
 
@@ -216,7 +240,7 @@ namespace MoexTrading.Plaza.Job
                             if (dataKotir.Value == curKotir.Value)
                                 return 0;
 
-                            curKotir.Diference = dataKotir.Value - curKotir.Value;
+                            curKotir.Diference = com.trend_scale;
                             curKotir.Percent = curKotir.Diference * 100 / curKotir.Value;
 
                             APIMongo.UpdateKotirovka(curKotir);
@@ -242,13 +266,13 @@ namespace MoexTrading.Plaza.Job
                     orders_aggr glass = new orders_aggr(replmsg.Data);
                     int id = glass.isin_id;
 
-                    if (glass.volume == 0 || glass.price == 0)
+                    if (glass.volume == 0 || glass.price_scale == 0)
                         return 0;
 
                     var data = APIMongo.GetGlassById(id);
 
                     Glass gl = new Glass();
-                    gl.Price = glass.price;
+                    gl.Price = glass.price_scale;
                     gl.Volum = glass.volume;
                     gl.Dir = glass.dir;
 
@@ -272,6 +296,39 @@ namespace MoexTrading.Plaza.Job
 
                         APIMongo.UpdateGlass(data);
                     }
+                }
+
+                return 0;
+            }
+            catch (CGateException e)
+            {
+                return (int)e.ErrCode;
+            }
+        }
+
+        private static int MessageHandlerTime(Connection conn, Listener listener, Message msg)
+        {
+            try
+            {
+                if (msg.Type == MessageType.MsgStreamData)
+                {
+                    StreamDataMessage replmsg = (StreamDataMessage)msg;
+                    if (replmsg.MsgName.Equals("orders"))
+                    {
+                        orders_log order = new orders_log(replmsg.Data);
+                    }
+
+
+                    
+                    heartbeat tablServTime = new heartbeat(replmsg.Data);
+
+                    var time = tablServTime.server_time;
+                    var temp  = new DateTime(2018, 1, 1);
+
+                    if (time.Equals(temp))
+                        return 0;
+
+                    DataServer.Time = time;
                 }
 
                 return 0;
