@@ -23,7 +23,7 @@ namespace MoexTrading.Controllers
 
         public ActionResult TotalInfo()
         {
-            ViewBag.List = APIMongo.GetTools();
+            ViewBag.NameInstrument = APIMongo.GetTools();
 
             return View();
         }

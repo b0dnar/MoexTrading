@@ -227,6 +227,7 @@
     <Compile Include="Plaza\Job\TotalInfo.cs" />
     <Compile Include="Plaza\Schemes\FutCommon.cs" />
     <Compile Include="Plaza\Schemes\FutGlass.cs" />
+    <Compile Include="Plaza\Schemes\FutTime.cs" />
     <Compile Include="Plaza\Schemes\FutTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -280,6 +281,7 @@
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\total-info.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -143,7 +143,16 @@ namespace MoexTrading.Plaza.Schemes
             {
                 checkReader();
                 stream.Position = offset + 32;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                decimal buy;
+                try
+                {
+                    buy = (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                }
+                catch
+                {
+                    buy = 0;
+                }
+                return buy;
             }
             set
             {
@@ -216,7 +225,16 @@ namespace MoexTrading.Plaza.Schemes
             {
                 checkReader();
                 stream.Position = offset + 64;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                decimal sel;
+                try
+                {
+                    sel = (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                }
+                catch
+                {
+                    sel = 0;
+                }
+                return sel;
             }
             set
             {
@@ -289,7 +307,16 @@ namespace MoexTrading.Plaza.Schemes
             {
                 checkReader();
                 stream.Position = offset + 96;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                decimal op;
+                try
+                {
+                    op = (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                }
+                catch
+                {
+                    op = 0;
+                }
+                return op;
             }
             set
             {
@@ -314,7 +341,16 @@ namespace MoexTrading.Plaza.Schemes
             {
                 checkReader();
                 stream.Position = offset + 107;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                decimal cl;
+                try
+                {
+                    cl = (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                }
+                catch
+                {
+                    cl = 0;
+                }
+                return cl;
             }
             set
             {
@@ -339,7 +375,17 @@ namespace MoexTrading.Plaza.Schemes
             {
                 checkReader();
                 stream.Position = offset + 118;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                decimal rez;
+                try
+                {
+                    rez = (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                }
+                catch
+                {
+                    rez = 0;
+                }
+
+                return rez;
             }
             set
             {
@@ -364,7 +410,16 @@ namespace MoexTrading.Plaza.Schemes
             {
                 checkReader();
                 stream.Position = offset + 129;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                decimal tr;
+                try
+                {
+                    tr = (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                }
+                catch
+                {
+                    tr = 0;
+                }
+                return tr;
             }
             set
             {
@@ -437,7 +492,16 @@ namespace MoexTrading.Plaza.Schemes
             {
                 checkReader();
                 stream.Position = offset + 168;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                decimal pr;
+                try
+                {
+                    pr = (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                }
+                catch
+                {
+                    pr = 0;
+                }
+                return pr;
             }
             set
             {
@@ -462,7 +526,16 @@ namespace MoexTrading.Plaza.Schemes
             {
                 checkReader();
                 stream.Position = offset + 179;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                decimal pr;
+                try
+                {
+                    pr = (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                }
+                catch
+                {
+                    pr = 0;
+                }
+                return pr;
             }
             set
             {
@@ -569,7 +642,16 @@ namespace MoexTrading.Plaza.Schemes
             {
                 checkReader();
                 stream.Position = offset + 232;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                decimal kot;
+                try
+                {
+                    kot = (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                }
+                catch
+                {
+                    kot = 0;
+                }
+                return kot;
             }
             set
             {
@@ -610,7 +692,16 @@ namespace MoexTrading.Plaza.Schemes
             {
                 checkReader();
                 stream.Position = offset + 252;
-                return P2TypeParser.ParseTimeAsDate(reader);
+                DateTime time;
+                try
+                {
+                    time = P2TypeParser.ParseTimeAsDate(reader);
+                }
+                catch
+                {
+                    time = DateTime.Now;
+                }
+                return time;
             }
             set
             {
@@ -642,7 +733,16 @@ namespace MoexTrading.Plaza.Schemes
             {
                 checkReader();
                 stream.Position = offset + 272;
-                return (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                decimal dec;
+                try
+                {
+                    dec = (decimal)P2TypeParser.ParseBCDAsDecimal(reader, stream);
+                }
+                catch
+                {
+                    dec = old_kotir;
+                }
+                return dec;
             }
             set
             {
