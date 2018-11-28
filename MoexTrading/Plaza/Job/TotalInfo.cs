@@ -160,13 +160,13 @@ namespace MoexTrading.Plaza.Job
 
                     var dataTik = APIMongo.GetCandlesTikById(id, ElementMongo.NameTableCandlesOnTik);
 
-                    if (com.price_scale > 0)
+                    if (com.price > 0)
                     {
                         if (dataTik == null)
                         {
                             DataCandlesTik data = new DataCandlesTik();
                             data.Id = id;
-                            data.ArrayCandles.Add(com.price_scale);
+                            data.ArrayCandles.Add(com.price);
 
                             APIMongo.SetCandles(data.ToBsonDocument(), ElementMongo.NameTableCandlesOnTik);
                         }
@@ -174,20 +174,11 @@ namespace MoexTrading.Plaza.Job
                         {
                             int countElement = dataTik.ArrayCandles.Count;
 
-                            if (dataTik.ArrayCandles[countElement - 1] != com.price_scale)
+                            if (dataTik.ArrayCandles[countElement - 1] != com.price)
                             {
-                                dataTik.ArrayCandles.Add(com.price_scale);
-
-                                if (com.max_price_scale == 0)
-                                    dataTik.ArrayMax.Add(dataTik.ArrayCandles[countElement - 1] > dataTik.ArrayCandles[countElement] ? dataTik.ArrayCandles[countElement - 1] : dataTik.ArrayCandles[countElement]);
-                                else
-                                    dataTik.ArrayMax.Add(com.max_price_scale);
-
-                                if (com.min_price_scale == 0)
-                                    dataTik.ArrayMin.Add(dataTik.ArrayCandles[countElement - 1] > dataTik.ArrayCandles[countElement] ? dataTik.ArrayCandles[countElement] : dataTik.ArrayCandles[countElement - 1]);
-                                else
-                                    dataTik.ArrayMin.Add(com.min_price_scale);
-
+                                dataTik.ArrayCandles.Add(com.price);
+                                dataTik.ArrayMax.Add(dataTik.ArrayCandles[countElement - 1] > dataTik.ArrayCandles[countElement] ? dataTik.ArrayCandles[countElement - 1] : dataTik.ArrayCandles[countElement]);
+                                dataTik.ArrayMin.Add(dataTik.ArrayCandles[countElement - 1] > dataTik.ArrayCandles[countElement] ? dataTik.ArrayCandles[countElement] : dataTik.ArrayCandles[countElement - 1]);
                                 dataTik.ArrayTime.Add(com.mod_time_ns);
 
                                 APIMongo.UpdateCandlesTik(dataTik, ElementMongo.NameTableCandlesOnTik);
@@ -197,7 +188,7 @@ namespace MoexTrading.Plaza.Job
 
                     if (com.close_price > 0)
                     {
-                        Price price  = new Price();
+                        Price price = new Price();
                         price.Max = com.max_price;
                         price.Min = com.min_price;
                         price.Open = com.open_price;
@@ -222,8 +213,8 @@ namespace MoexTrading.Plaza.Job
                             APIMongo.UpdateCandlesDay(dataDay, ElementMongo.NameTableCandlesOnDays);
                         }
                     }
-                        
-                    if(com.cur_kotir_scale > 0)
+
+                    if (com.cur_kotir_scale > 0)
                     {
                         var curKotir = new DataKotirovka();
                         curKotir.Id = id;
@@ -231,7 +222,7 @@ namespace MoexTrading.Plaza.Job
 
                         var dataKotir = APIMongo.GetKotirovkaById(id).Result;
 
-                        if(dataKotir == null)
+                        if (dataKotir == null)
                         {
                             APIMongo.SetKotirovka(curKotir.ToBsonDocument());
                         }
@@ -266,13 +257,13 @@ namespace MoexTrading.Plaza.Job
                     orders_aggr glass = new orders_aggr(replmsg.Data);
                     int id = glass.isin_id;
 
-                    if (glass.volume == 0 || glass.price_scale == 0)
+                    if (glass.volume == 0 || glass.price == 0)
                         return 0;
 
                     var data = APIMongo.GetGlassById(id);
 
                     Glass gl = new Glass();
-                    gl.Price = glass.price_scale;
+                    gl.Price = glass.price;
                     gl.Volum = glass.volume;
                     gl.Dir = glass.dir;
 
@@ -319,11 +310,11 @@ namespace MoexTrading.Plaza.Job
                     }
 
 
-                    
+
                     heartbeat tablServTime = new heartbeat(replmsg.Data);
 
                     var time = tablServTime.server_time;
-                    var temp  = new DateTime(2018, 1, 1);
+                    var temp = new DateTime(2018, 1, 1);
 
                     if (time.Equals(temp))
                         return 0;

@@ -19,21 +19,21 @@ namespace MoexTrading.Controllers
 
         public object PostDataCandles([FromBody]JObject value)
         {
-            var T = new TT();
+            //var T = new TT();
 
-            List<TT> lis = new List<TT>();
-            lis.Add(new TT { Time = 1538778600000, Arr = new float[4] { 6629.81f, 6650.5f, 6623.04f, 6633.33f } });
-            lis.Add(new TT { Time = 1538780400000, Arr = new float[4] { 6632.01f, 6643.59f, 6620, 6630.11f } });
-            lis.Add(new TT { Time = 1538782200000, Arr = new float[4] { 6630.71f, 6648.95f, 6623.34f, 6635.65f } });
-            lis.Add(new TT { Time = 1538784000000, Arr = new float[4] { 6635.65f, 6651, 6629.67f, 6638.24f } });
-            lis.Add(new TT { Time = 1538785800000, Arr = new float[4] { 6638.24f, 6640, 6620, 6624.47f } });
+            //List<TT> lis = new List<TT>();
+            //lis.Add(new TT { Time = 1538778600000, Arr = new float[4] { 6629.81f, 6650.5f, 6623.04f, 6633.33f } });
+            //lis.Add(new TT { Time = 1538780400000, Arr = new float[4] { 6632.01f, 6643.59f, 6620, 6630.11f } });
+            //lis.Add(new TT { Time = 1538782200000, Arr = new float[4] { 6630.71f, 6648.95f, 6623.34f, 6635.65f } });
+            //lis.Add(new TT { Time = 1538784000000, Arr = new float[4] { 6635.65f, 6651, 6629.67f, 6638.24f } });
+            //lis.Add(new TT { Time = 1538785800000, Arr = new float[4] { 6638.24f, 6640, 6620, 6624.47f } });
 
-            return lis;
+            //return lis;
 
-            //int id = (int)value["Id"];
-            //var list = APIMongo.GetCandlesTikById(id, ElementMongo.NameTableCandlesOnTik);
+            int id = (int)value["Id"];
+            var list = APIMongo.GetCandlesTikById(id, ElementMongo.NameTableCandlesOnTik);
 
-         //   return list;
+            return list;
         }
 
         public object GetDataKotirovka()
