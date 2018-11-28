@@ -10,9 +10,6 @@ using MoexTrading.Models;
 
 namespace MoexTrading.Plaza.Job
 {
-
-
-
     public static class TotalInfo
     {
         private static bool bExit = false;

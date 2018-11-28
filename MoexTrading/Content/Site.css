@@ -3,6 +3,14 @@
     padding-bottom: 20px;
 }
 
+div.centered {
+    text-align: center;
+}
+    div.centered table {
+        margin: 0 auto;
+        text-align: left;
+    }
+
 /*TABLE COTIROVKA*/
 #cotirovka-info, #stakan-info {
     margin-top: 10px;

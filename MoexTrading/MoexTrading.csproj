@@ -51,7 +51,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="cgate_net64">
-      <HintPath>..\..\..\..\DLL\LibPlaza\cgate_net64.dll</HintPath>
+      <HintPath>..\..\..\..\..\SpectraCGate\bin\cgate_net64.dll</HintPath>
     </Reference>
     <Reference Include="DnsClient, Version=1.0.7.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
       <HintPath>..\packages\DnsClient.1.0.7\lib\net45\DnsClient.dll</HintPath>
@@ -280,6 +280,7 @@
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <Content Include="Scripts\kotirovka-run.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\total-info.js" />
     <Content Include="Web.config" />
@@ -298,6 +299,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\TotalInfo.cshtml" />
+    <Content Include="Views\Home\Kotirovka.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

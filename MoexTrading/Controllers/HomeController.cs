@@ -16,7 +16,7 @@ namespace MoexTrading.Controllers
         {
 
 
-            ViewBag.Title = "Home Page";
+            ViewBag.Title = "Вход";
 
             return View();
         }
@@ -24,6 +24,12 @@ namespace MoexTrading.Controllers
         public ActionResult TotalInfo()
         {
             ViewBag.NameInstrument = APIMongo.GetTools();
+
+            return View();
+        }
+
+        public ActionResult Kotirovka()
+        {
 
             return View();
         }
