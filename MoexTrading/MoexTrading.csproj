@@ -225,6 +225,8 @@
     <Compile Include="Models\DataBase.cs" />
     <Compile Include="Models\InfoMongo.cs" />
     <Compile Include="Plaza\Job\TotalInfo.cs" />
+    <Compile Include="Plaza\Job\UserInfo.cs" />
+    <Compile Include="Plaza\Schemes\Account.cs" />
     <Compile Include="Plaza\Schemes\FutCommon.cs" />
     <Compile Include="Plaza\Schemes\FutGlass.cs" />
     <Compile Include="Plaza\Schemes\FutTime.cs" />
@@ -235,7 +237,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Schedule\StaticJob.cs" />
+    <Compile Include="Schedule\Job.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -271,6 +273,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Plaza\ini\cgate.ini" />
+    <Content Include="Plaza\ini\user.ini" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

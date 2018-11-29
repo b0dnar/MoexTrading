@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using MongoDB.Bson;
 using ru.micexrts.cgate;
 using ru.micexrts.cgate.message;
 using MoexTrading.Plaza.Schemes;
 using MoexTrading.Models;
-
 
 namespace MoexTrading.Plaza.Job
 {
@@ -16,12 +13,11 @@ namespace MoexTrading.Plaza.Job
 
         public static void Run()
         {
-
             string streamInfo = "FORTS_FUTINFO_REPL", tableTools = "fut_sess_contents", streamCommonn = "FORTS_FUTCOMMON_REPL", tableCandles = "common", streamGlass = "FORTS_FUTAGGR50_REPL", streamTrade = "FORTS_FUTTRADE_REPL", tableTime = "heartbeat";
             string strConnectInfo = "p2repl://" + streamInfo + ";tables=" + tableTools;
             string strConnectCommon = "p2repl://" + streamCommonn + ";tables=" + tableCandles;
             string strConnectGlass = "p2repl://" + streamGlass;
-            string strConnectTime = "p2ordbook://FORTS_ORDLOG_REPL;snapshot=FORTS_ORDBOOK_REPL";
+            string strConnectTime = "p2repl://FORTS_DEALS_REPL;tables=heartbeat";
 
             CGate.Open("ini=/Plaza/bin/cgate.ini;key=11111111");
             CGate.LogInfo("test .Net log.");
@@ -157,13 +153,13 @@ namespace MoexTrading.Plaza.Job
 
                     var dataTik = APIMongo.GetCandlesTikById(id, ElementMongo.NameTableCandlesOnTik);
 
-                    if (com.price > 0)
+                    if (com.price_scale > 0)
                     {
                         if (dataTik == null)
                         {
                             DataCandlesTik data = new DataCandlesTik();
                             data.Id = id;
-                            data.ArrayCandles.Add(com.price);
+                            data.ArrayCandles.Add(com.price_scale);
 
                             APIMongo.SetCandles(data.ToBsonDocument(), ElementMongo.NameTableCandlesOnTik);
                         }
@@ -171,9 +167,9 @@ namespace MoexTrading.Plaza.Job
                         {
                             int countElement = dataTik.ArrayCandles.Count;
 
-                            if (dataTik.ArrayCandles[countElement - 1] != com.price)
+                            if (dataTik.ArrayCandles[countElement - 1] != com.price_scale)
                             {
-                                dataTik.ArrayCandles.Add(com.price);
+                                dataTik.ArrayCandles.Add(com.price_scale);
                                 dataTik.ArrayMax.Add(dataTik.ArrayCandles[countElement - 1] > dataTik.ArrayCandles[countElement] ? dataTik.ArrayCandles[countElement - 1] : dataTik.ArrayCandles[countElement]);
                                 dataTik.ArrayMin.Add(dataTik.ArrayCandles[countElement - 1] > dataTik.ArrayCandles[countElement] ? dataTik.ArrayCandles[countElement] : dataTik.ArrayCandles[countElement - 1]);
                                 dataTik.ArrayTime.Add(com.mod_time_ns);
@@ -301,11 +297,14 @@ namespace MoexTrading.Plaza.Job
                 if (msg.Type == MessageType.MsgStreamData)
                 {
                     StreamDataMessage replmsg = (StreamDataMessage)msg;
-                    if (replmsg.MsgName.Equals("orders"))
+                    if (replmsg.MsgName.Equals("heartbeat"))
                     {
-                        orders_log order = new orders_log(replmsg.Data);
+                        heartbeat order = new heartbeat(replmsg.Data);
                     }
-
+                    else
+                    {
+                        return 0;
+                    }
 
 
                     heartbeat tablServTime = new heartbeat(replmsg.Data);
