@@ -16,8 +16,8 @@ namespace MoexTrading
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{action}",
-                defaults: new { controller = "Home", action = "Index" }
+                routeTemplate: "api/{controller}/{action}/{id}",
+                defaults: new { controller = "Home", action = "Index", id = RouteParameter.Optional }
                // routeTemplate: "api/{controller}/{id}",
               //  defaults: new { id = RouteParameter.Optional }
             );

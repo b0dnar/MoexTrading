@@ -232,13 +232,19 @@ namespace MoexTrading.Plaza.Job
                     }
                 }
 
-                //DataDeal deal = new DataDeal();
-                //deal.Id = id;
-                //if (com.best_buy_scale != 0)
-                //    deal.Buy = com.best_buy_scale;
+                if(com.best_buy_scale > 0 || com.best_sell_scale > 0)
+                {
+                    DataDeal deal = new DataDeal();
+                    deal.Id = id;
+                    deal.Buy = com.best_buy_scale;
+                    deal.Sell = com.best_sell_scale;
 
-                //if (com.best_sell_scale != 0)
-                //    deal.Sell = com.best_sell_scale;
+                    var dataDeal = APIMongo.GetDataById<DataDeal>(id, ElementMongo.NameTableDeal);
+                    if (dataDeal == null)
+                        APIMongo.SetData(deal.ToBsonDocument(), ElementMongo.NameTableDeal);
+                    else if (dataDeal.Buy != deal.Buy || dataDeal.Sell != deal.Sell)
+                        APIMongo.UpdateData(deal, ElementMongo.NameTableDeal);
+                }
 
                 return 0;
             }
@@ -305,25 +311,9 @@ namespace MoexTrading.Plaza.Job
                 if (msg.Type == MessageType.MsgStreamData)
                 {
                     StreamDataMessage replmsg = (StreamDataMessage)msg;
-                    if (replmsg.MsgName.Equals("heartbeat"))
-                    {
-                        heartbeat order = new heartbeat(replmsg.Data);
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-
-
                     heartbeat tablServTime = new heartbeat(replmsg.Data);
 
-                    var time = tablServTime.server_time;
-                    var temp = new DateTime(2018, 1, 1);
-
-                    if (time.Equals(temp))
-                        return 0;
-
-                    DataServer.Time = time;
+                    DataServer.Time = tablServTime.server_time;
                 }
 
                 return 0;

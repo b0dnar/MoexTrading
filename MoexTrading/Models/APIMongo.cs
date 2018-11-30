@@ -106,6 +106,11 @@ namespace MoexTrading.Models
                     await c5.UpdateOneAsync(f5, u5);
                     break;
                 case "DataDeal":
+                    var c6 = database.GetCollection<DataDeal>(nameCollection);
+                    DataDeal d6 = (DataDeal)Convert.ChangeType(data, typeof(DataDeal));
+                    var f6 = Builders<DataDeal>.Filter.Eq("_id", d6.Id);
+                    var u6 = Builders<DataDeal>.Update.Set("Buy", d6.Buy).Set("Sell", d6.Sell);
+                    await c6.UpdateOneAsync(f6, u6);
                     break;
             }
         }

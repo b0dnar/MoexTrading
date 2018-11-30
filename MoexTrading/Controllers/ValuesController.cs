@@ -11,20 +11,7 @@ namespace MoexTrading.Controllers
 {
     public class ValuesController : ApiController
     {
-        // GET api/values
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        public object PostDataCandles([FromBody]JObject value)
-        {
-            int id = (int)value["Id"];
-            var list = APIMongo.GetDataById<DataCandlesTik>(id, ElementMongo.NameTableCandlesOnTik);
-
-            return list;
-        }
-
+        // GET 
         public object GetDataKotirovka()
         {
             var listCotir = APIMongo.GetData<DataKotirovka>(ElementMongo.NameTableKotirovka);
@@ -38,21 +25,23 @@ namespace MoexTrading.Controllers
             return result;
         }
 
-        public object PostSetStakan([FromBody]JObject value)
+        public object GetDataCandlesTikById(int id)
         {
-            int id = (int)value["Id"];
-            var data = APIMongo.GetDataById<DataGlass>(id, ElementMongo.NameTableGlass);
+            return APIMongo.GetDataById<DataCandlesTik>(id, ElementMongo.NameTableCandlesOnTik);
+        }
 
+        public object GetStakanById(int id)
+        {
+            var data = APIMongo.GetDataById<DataGlass>(id, ElementMongo.NameTableGlass);
             if (data == null)
                 return null;
 
             return data.ArrayGlass;
         }
 
-        // GET api/values/5
-        public string Get(int id)
+        public object GetDealById(int id)
         {
-            return "value";
+            return APIMongo.GetDataById<DataDeal>(id, ElementMongo.NameTableDeal);
         }
 
         // POST api/values
