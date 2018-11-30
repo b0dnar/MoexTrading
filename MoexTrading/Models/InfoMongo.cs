@@ -66,4 +66,15 @@ namespace MoexTrading.Models
         NameTableGlass
     }
 
+    public enum TypePlaza
+    {
+        Tools,
+        CandlesTik,
+        CandlesDay,
+        Glass,
+        Kotirovka,
+        Deal
+    }
+
+
 }

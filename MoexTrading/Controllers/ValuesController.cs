@@ -19,27 +19,16 @@ namespace MoexTrading.Controllers
 
         public object PostDataCandles([FromBody]JObject value)
         {
-            //var T = new TT();
-
-            //List<TT> lis = new List<TT>();
-            //lis.Add(new TT { Time = 1538778600000, Arr = new float[4] { 6629.81f, 6650.5f, 6623.04f, 6633.33f } });
-            //lis.Add(new TT { Time = 1538780400000, Arr = new float[4] { 6632.01f, 6643.59f, 6620, 6630.11f } });
-            //lis.Add(new TT { Time = 1538782200000, Arr = new float[4] { 6630.71f, 6648.95f, 6623.34f, 6635.65f } });
-            //lis.Add(new TT { Time = 1538784000000, Arr = new float[4] { 6635.65f, 6651, 6629.67f, 6638.24f } });
-            //lis.Add(new TT { Time = 1538785800000, Arr = new float[4] { 6638.24f, 6640, 6620, 6624.47f } });
-
-            //return lis;
-
             int id = (int)value["Id"];
-            var list = APIMongo.GetCandlesTikById(id, ElementMongo.NameTableCandlesOnTik);
+            var list = APIMongo.GetDataById<DataCandlesTik>(id, ElementMongo.NameTableCandlesOnTik);
 
             return list;
         }
 
         public object GetDataKotirovka()
         {
-            var listCotir = APIMongo.GetKotirovka();// .GetCotirovka();
-            var listInfo = APIMongo.GetTools();// .GetData("NameInstruments");
+            var listCotir = APIMongo.GetData<DataKotirovka>(ElementMongo.NameTableKotirovka);
+            var listInfo = APIMongo.GetData<DataTools>(ElementMongo.NameTableTools);
 
 
             var result = from a in listCotir
@@ -52,7 +41,7 @@ namespace MoexTrading.Controllers
         public object PostSetStakan([FromBody]JObject value)
         {
             int id = (int)value["Id"];
-            var data = APIMongo.GetGlassById(id);
+            var data = APIMongo.GetDataById<DataGlass>(id, ElementMongo.NameTableGlass);
 
             if (data == null)
                 return null;
