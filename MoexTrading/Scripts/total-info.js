@@ -103,9 +103,11 @@ function loadCandles(id) {
 
 function myFunction() {
     var id_tool = $('#test > option:selected').attr("value");
+    var name = $('#test > option:selected').text();
+   document.title = 'Инструмент ' + name;  
     loadGlass(id_tool);
     loadCandles(id_tool);
-    loadKotirovka(90, 70, 120); //?
+    loadKotirovka(90, 70, 120);
 }
 
 loadKotirovka('#cotirovka-info', 90, 70, 120);
