@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Таблица котировок";
+}
+
+<html>
+<head>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts/kotirovka-run.js")
+</head>
+<body>
+    <div class="page-header centered">
+        <h4 class="text-header">Таблица котировок:</h4>
+        <br />
+    </div>
+
+    <div class="centered" id="cotirovka">
+    </div>
+
+    <script>
+        loadKotirovka('#cotirovka', 150, 120, 200);
+    </script>
+
+</body>
+</html>
+
+

@@ -14,7 +14,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Общая панель", "TotalInfo", "Home", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("Таблица котировок", "Index", "Help", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Таблица котировок", "Kotirovka", "Home", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("Таблица сделок", "Index", "Help", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("Состояние счета", "Index", "Help", new { area = "" }, null)</li>
                 </ul>
@@ -25,7 +25,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; Время на сервере - @MoexTrading.Models.DataServer.Time.ToLongDateString()</p>
+            <p>&copy; Время на сервере - @MoexTrading.Models.DataServer.Time.ToLongDateString()  @MoexTrading.Models.DataServer.Time.ToLongTimeString()</p>
         </footer>
     </div>
 

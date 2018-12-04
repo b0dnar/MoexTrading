@@ -1,4 +1,9 @@
-﻿<html>
+﻿@{
+    ViewBag.Title = "Общая панель";
+}
+
+
+<html>
 <head>
     <style>
     </style>
@@ -57,10 +62,13 @@
             <br />
             <div id="stakan-info">
             </div>
+            <div id="deal-info">
+            </div>
         </div>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts/kotirovka-run.js")
     @Scripts.Render("~/Scripts/total-info.js")
     @Scripts.Render("https://canvasjs.com/assets/script/canvasjs.min.js")
     @Scripts.Render("https://canvasjs.com/assets/script/jquery-1.11.1.min.js")

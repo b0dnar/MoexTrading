@@ -3,6 +3,20 @@
     padding-bottom: 20px;
 }
 
+div.centered {
+    text-align: center;
+}
+div.centered table {
+    margin: 0 auto;
+    text-align: left;
+}
+
+/*Text bold and big text*/
+.text-header {
+    font-weight: bold;
+    font-size: 22px;
+}
+
 /*TABLE COTIROVKA*/
 #cotirovka-info, #stakan-info {
     margin-top: 10px;
@@ -11,5 +25,4 @@
 }
 #cotirovka-info th p, #stakan-info th p {
     position: absolute;
-    /*margin-top: -20px;*/
 }

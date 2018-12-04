@@ -74,8 +74,17 @@ namespace MoexTrading.Models
         }
     }
 
+    public class DataDeal
+    {
+        public int Id { get; set; }
+        public decimal Buy { get; set; }
+        public decimal Sell { get; set; }
+    }
+
+
     public static class DataServer
     {
         public static DateTime Time { get; set; }
     }
+
 }
