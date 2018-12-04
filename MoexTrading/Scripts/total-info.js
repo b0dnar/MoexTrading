@@ -44,7 +44,7 @@ function loadCandles(id) {
 
         for (var i = 0; i < datas.ArrayCandles.length; i++) {
             dataPoints.push({
-                x: new Date(datas.ArrayTime[i]),
+                x: new Date(2018,11,i+1),//datas.ArrayTime[i]),
                 y: [
                     datas.ArrayCandles[i],
                     datas.ArrayMax[i],
@@ -77,7 +77,13 @@ function loadCandles(id) {
         options
     );
 
-    $.get("/api/values/getdatacandlestikbyid/" + id, callback);
+    $.ajax({
+        url: "/api/values/getdatacandlestikbyid/" + id,
+        type: "get",
+        async: false,
+        success: callback
+    });
+
     if (dataPoints == null)
         return;
 
