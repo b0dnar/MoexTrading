@@ -17,7 +17,43 @@ div.centered table {
     font-size: 22px;
 }
 
-/*TABLE COTIROVKA*/
+#deal-info {
+    cursor: move;
+    position: relative;
+    background-color: #FFFFFF;
+    width: 93%;
+}
+#deal-row {
+    outline: 1px solid #000;
+}
+.deal-sell {
+    background-color: #FFDEDE;
+    height: 35px;
+}
+.deal-buy {
+    background-color: #C7C9EE;
+    height: 35px;
+}
+.text-sell {
+    color: red;
+    margin-top: -5px;
+}
+.text-buy {
+    color: blue;
+    margin-top: -5px;
+}
+.value-deal {
+    font-weight: bold;
+    margin-top: -5px;
+}
+.text-value {
+    height: 35px;
+    margin-left: -20px;
+    width: 54px;
+    text-align: center;
+}
+
+/*TABLE COTIROVKA */
 #cotirovka-info, #stakan-info {
     margin-top: 10px;
     height: 200px;
