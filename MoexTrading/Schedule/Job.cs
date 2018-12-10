@@ -23,8 +23,8 @@ namespace MoexTrading.Schedule
     {
         public MyRegistry()
         {
-            Schedule<StaticJob>().ToRunNow();
-           // Schedule<UserJob>().ToRunNow();
+           // Schedule<StaticJob>().ToRunNow();
+            Schedule<UserJob>().ToRunNow();
         }
     }
 }

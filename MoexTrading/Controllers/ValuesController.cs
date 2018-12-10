@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using MoexTrading.Models;
-using Newtonsoft.Json.Linq;
+using MoexTrading.Plaza.Job;
 
 namespace MoexTrading.Controllers
 {
@@ -45,8 +45,9 @@ namespace MoexTrading.Controllers
         }
 
         // POST api/values
-        public void Post([FromBody]string value)
+        public void PostPublish()
         {
+            UserInfo.Publish();
         }
 
         // PUT api/values/5

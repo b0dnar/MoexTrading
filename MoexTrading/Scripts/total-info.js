@@ -90,13 +90,21 @@ function loadCandles(id) {
     chart.render();
 }
 
+var runPublish = function() {
+    $.ajax({
+        url: "/api/values/postpublish",
+        type: "post",
+        async: false
+    });
+}
+
 function loadDeal(id) {
     if (id == 0) {
 
     }
     
     var callback = function (data) {
-        var text = '<div id="deal-row"><div class="row"><div class="col-md-1" id="deal-cursor"></div><button class="col-md-4 deal-sell"><div class="text-sell">Продажа</div><div class="value-deal">' + data.Sell + '</div></button><div class="col-md-2"><input class="text-value" type="text" value="0.00"></div><button class="col-md-4 deal-buy"><div class="text-buy">Покупка</div><div class="value-deal">' + data.Buy + '</div></button></div></div>';
+        var text = '<div id="deal-row"><div class="row"><div class="col-md-1" id="deal-cursor"></div><button class="col-md-4 deal-sell" onclick="runPublish()"><div class="text-sell">Продажа</div><div class="value-deal">' + data.Sell + '</div></button><div class="col-md-2"><input class="text-value" type="text" value="0.00"></div><button class="col-md-4 deal-buy"><div class="text-buy">Покупка</div><div class="value-deal">' + data.Buy + '</div></button></div></div>';
         $('#deal-info').html(text);
     }
 
